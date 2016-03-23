@@ -4,5 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="thermalTagOrange">#EB8157</color>
-    <color name="thermalTagGrey">#5D5D5D</color>
+    <color name="thermalTagGrey">#5d5d5d</color>
+    <color name="thermalTagWhite">#EFEEED</color>
+    <color name="thermaltag_softGrey">#ececec</color>
 </resources>
