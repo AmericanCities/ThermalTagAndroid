@@ -8,7 +8,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="thermaltag.thermaltag.MainActivity"
-    android:background="@color/thermalTagOrange">
+    android:background="@color/thermalTagOrange"
+    android:clickable="true">
 
     <View
         android:id="@+id/LoginPannel"
@@ -70,9 +71,33 @@
         android:ems="10"
         android:id="@+id/editText"
         android:hint="@string/passwordHint"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:background="@drawable/thermaltag_password_bkgd"
-        android:paddingStart="55dp" />
+        android:paddingStart="55dp"
+        android:layout_below="@+id/editText2"
+        android:layout_alignStart="@+id/editText2"
+        android:layout_marginTop="26dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/login_button"
+        android:src="@drawable/circle_login"
+        android:paddingTop="25dp"
+        android:layout_below="@+id/editText"
+        android:layout_alignStart="@+id/imageView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/loginText"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/LoginPannel"
+        android:layout_alignParentBottom="false"
+        android:textColor="@color/thermalTagWhite"
+        android:layout_alignStart="@+id/login_button"
+        android:layout_alignEnd="@+id/login_button"
+        android:textAlignment="center"
+        android:paddingTop="10dp" />
 
 </RelativeLayout>
