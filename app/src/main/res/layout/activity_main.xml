@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="thermaltag.thermaltag.MainActivity"
+    tools:context=".LoginActivity"
     android:background="@color/thermalTagOrange"
     android:clickable="true">
 
@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/editText2"
+        android:id="@+id/username_field"
         android:hint="@string/usernameHint"
         android:layout_marginTop="22dp"
         android:textColor="@color/thermalTagGrey"
@@ -69,22 +69,26 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/editText"
+        android:id="@+id/password_field"
         android:hint="@string/passwordHint"
         android:background="@drawable/thermaltag_password_bkgd"
         android:paddingStart="55dp"
-        android:layout_below="@+id/editText2"
-        android:layout_alignStart="@+id/editText2"
+        android:layout_below="@+id/username_field"
+        android:layout_alignStart="@+id/username_field"
         android:layout_marginTop="26dp" />
 
-    <ImageView
+
+
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/login_button"
+        android:id="@+id/loginButton"
         android:src="@drawable/circle_login"
-        android:paddingTop="25dp"
-        android:layout_below="@+id/editText"
-        android:layout_alignStart="@+id/imageView" />
+        android:background="#00ffffff"
+        android:layout_below="@+id/password_field"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp" />
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -95,9 +99,9 @@
         android:layout_below="@+id/LoginPannel"
         android:layout_alignParentBottom="false"
         android:textColor="@color/thermalTagWhite"
-        android:layout_alignStart="@+id/login_button"
-        android:layout_alignEnd="@+id/login_button"
         android:textAlignment="center"
-        android:paddingTop="10dp" />
+        android:paddingTop="10dp"
+        android:layout_alignEnd="@+id/imageView"
+        android:layout_alignStart="@+id/loginButton" />
 
 </RelativeLayout>
