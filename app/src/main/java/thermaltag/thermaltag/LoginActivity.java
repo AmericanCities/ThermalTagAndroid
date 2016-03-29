@@ -42,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String LOGTAG = "ThermalTagLog";
     private EditText username, password;
     private String enteredUsername, enteredPassword;
+    // TODO: Add public URL for thermalTag here...
     private final String serverUrl = "http://10.0.2.2/androidLogin/index.php";
 
     @Override
@@ -65,10 +66,12 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Username or password must be filled", Toast.LENGTH_LONG).show();
                     return;
 
+                } else {
+                    // request authentication with remote server4
+                    AsyncDataClass asyncRequestObject = new AsyncDataClass();
+                    asyncRequestObject.execute(serverUrl, enteredUsername, enteredPassword);
                 }
-                // request authentication with remote server4
-                AsyncDataClass asyncRequestObject = new AsyncDataClass();
-                asyncRequestObject.execute(serverUrl, enteredUsername, enteredPassword);
+
             }
         });
 
@@ -87,16 +90,25 @@ public class LoginActivity extends AppCompatActivity {
                 URL url = new URL(serverUrl);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 StringBuilder builder = new StringBuilder();
-
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setDoOutput(true);
                 urlConnection.setDoInput(true);
 
+                // build JSON object
+                // section 3: http://www.vogella.com/tutorials/AndroidJSON/article.html
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("username", params[1]);
+                    jsonObject.put("password", params[2]);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Log.i(LOGTAG, "jsonObject created :: " + jsonObject);
 
                 OutputStream outputStream = urlConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8"));
-                String data = URLEncoder.encode("login_name", "UTF-8")+"="+URLEncoder.encode(enteredUsername,"UTF-8")+"&"+
-                        URLEncoder.encode("login_pass","UTF-8")+"="+URLEncoder.encode(enteredPassword,"UTF-8");
+                String data = jsonObject.toString();
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
