@@ -15,6 +15,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
@@ -94,6 +95,9 @@ public class LoginActivity extends AppCompatActivity {
                 urlConnection.setDoOutput(true);
                 urlConnection.setDoInput(true);
 
+
+
+                /*
                 // build JSON object
                 // section 3: http://www.vogella.com/tutorials/AndroidJSON/article.html
                 JSONObject jsonObject = new JSONObject();
@@ -105,11 +109,22 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 Log.i(LOGTAG, "jsonObject created :: " + jsonObject);
+                */
+
 
                 OutputStream outputStream = urlConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8"));
-                String data = jsonObject.toString();
-                bufferedWriter.write(data);
+
+                //String data = jsonObject.toString();
+                //bufferedWriter.write(data);
+
+
+                //write some GD post paramters - & separates characters!
+                //if you have an '=' or an '&' in the data you are trying to transmint
+                // be sure to URLEncode it before sending (theres got to be a function for this in java)
+                bufferedWriter.write("username=" + enteredUsername + '&');
+                bufferedWriter.write("password=" + enteredPassword + '&');
+
                 bufferedWriter.flush();
                 bufferedWriter.close();
                 outputStream.close();
@@ -123,6 +138,8 @@ public class LoginActivity extends AppCompatActivity {
                 bufferedReader.close();
                 inputStream.close();
                 urlConnection.disconnect();
+
+               Log.i(LOGTAG, "return info " + builder.toString());
                 return builder.toString();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
