@@ -49,11 +49,11 @@
 
 
     <EditText
+        android:id="@+id/username_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/username_field"
         android:hint="@string/usernameHint"
         android:layout_marginTop="22dp"
         android:textColor="@color/thermalTagGrey"

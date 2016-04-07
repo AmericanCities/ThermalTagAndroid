@@ -10,19 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -33,9 +22,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -56,7 +42,6 @@ public class LoginActivity extends AppCompatActivity {
         ImageButton loginButton = (ImageButton) findViewById(R.id.loginButton);
         Log.i(LOGTAG, "And we are off and running");
 
-
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +57,6 @@ public class LoginActivity extends AppCompatActivity {
                     AsyncDataClass asyncRequestObject = new AsyncDataClass();
                     asyncRequestObject.execute(serverUrl, enteredUsername, enteredPassword);
                 }
-
             }
         });
 
@@ -96,27 +80,8 @@ public class LoginActivity extends AppCompatActivity {
                 urlConnection.setDoInput(true);
 
 
-
-                /*
-                // build JSON object
-                // section 3: http://www.vogella.com/tutorials/AndroidJSON/article.html
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("username", params[1]);
-                    jsonObject.put("password", params[2]);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                Log.i(LOGTAG, "jsonObject created :: " + jsonObject);
-                */
-
-
                 OutputStream outputStream = urlConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8"));
-
-                //String data = jsonObject.toString();
-                //bufferedWriter.write(data);
 
 
                 //write some GD post paramters - & separates characters!
@@ -150,9 +115,7 @@ public class LoginActivity extends AppCompatActivity {
     }
         @Override
         protected void onPostExecute(String result) {
-
             super.onPostExecute(result);
-
             Log.i(LOGTAG, "Resulted Value: " + result);
 
             if(result.equals("") || result == null){
@@ -165,23 +128,22 @@ public class LoginActivity extends AppCompatActivity {
             if(jsonResult == 0){
                 Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_LONG).show();
                 return;
-
             }
 
+            // This is not working
             if(jsonResult == 1){
-                  Toast.makeText(LoginActivity.this, "You Logged in!", Toast.LENGTH_LONG).show();
-//                Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
-//                intentestt.putExtra("USERNAME", enteredUsername);
-//                intent.putExtra("MESSAGE", "You have been successfully login");
-//                startActivity(intent);
-
+                Toast.makeText(LoginActivity.this, "You Logged in!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(LoginActivity.this, CameraActivity.class);
+                startActivity(intent);
+                //  intentestt.putExtra("USERNAME", enteredUsername);
+                //  intent.putExtra("MESSAGE", "You have been successfully login");
             }
         }
 
     }
 
 
-    private int returnParsedJsonObject(String result){
+    private int returnParsedJsonObject(String result) {
         JSONObject resultObject = null;
         int returnedResult = 0;
         try {
@@ -196,6 +158,7 @@ public class LoginActivity extends AppCompatActivity {
 }
 
 
-//trying to psh back 
+
+
 
 
