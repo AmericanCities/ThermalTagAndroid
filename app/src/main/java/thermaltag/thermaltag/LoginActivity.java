@@ -170,10 +170,10 @@ public class LoginActivity extends AppCompatActivity {
 
             if(jsonResult == 1){
                   Toast.makeText(LoginActivity.this, "You Logged in!", Toast.LENGTH_LONG).show();
-//                Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
+                  Intent intent = new Intent(getApplicationContext(),CameraActivity.class);
 //                intentestt.putExtra("USERNAME", enteredUsername);
 //                intent.putExtra("MESSAGE", "You have been successfully login");
-//                startActivity(intent);
+                  startActivity(intent);
 
             }
         }
