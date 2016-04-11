@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -31,7 +32,7 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera_main);
 
-        Button cameraButton =(Button)findViewById(R.id.button_camera);
+        ImageButton cameraButton =(ImageButton)findViewById(R.id.button_camera);
         cameraButton.setOnClickListener(cameraListener);
     }
 

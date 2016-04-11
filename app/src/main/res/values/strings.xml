@@ -5,4 +5,14 @@
     <string name="logonFormTitle">ACCOUNT LOGIN</string>
     <string name="loginText">LOGIN</string>
     <string name="title_activity_camera">CameraActivity</string>
+    <string name="shipperCert">Origin Certificate</string>
+    <string name="harvestDate">Harvest Date</string>
+    <string name="harvestLocation">Harvest Location</string>
+    <string name="shellfishType">Shellfish Type</string>
+    <string name="quantity">Quantity</string>
+    <string name="temp">Temperature</string>
+    <string name="geoLocation">GEO Location</string>
+    <string name="timeScan">Time of Scan</string>
+    <string name="dateScan">Date of Scan</string>
+    <string name="scanId">Unique Scan ID</string>
 </resources>
