@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.keleon.myapplication.MainActivity">
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:id="@+id/image_camera"
+        android:background="@drawable/imageview"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/button4" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="Take Picture"
+        android:id="@+id/button_camera"
+        android:layout_below="@+id/image_camera"
+        android:layout_centerHorizontal="true"
+        android:background="#005a6c7f"
+        android:textColor="#ffffff"
+        android:layout_marginTop="-25dp"
+        android:src="@drawable/thermaltag_main_button" />
+
+    <!-- OCR FIELDS -->
+    <EditText
+        android:id="@+id/origin_shipper_cert"
+        android:layout_marginTop="10dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/shipperCert"
+        android:textColorHint="@color/thermalTagWhite"
+        android:inputType="text"
+        android:autoText="false"
+        android:layout_below="@+id/button_camera"
+        android:layout_alignParentStart="false"
+        android:background="#eb8157"
+        android:textColor="#ffffff"
+        android:layout_alignParentEnd="false"
+        android:padding="5dp" />
+
+    <EditText
+        android:id="@+id/harvest_date"
+        android:layout_marginTop="10dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/harvestDate"
+        android:textColorHint="@color/thermalTagWhite"
+        android:layout_below="@+id/origin_shipper_cert"
+        android:layout_alignParentStart="true"
+        android:background="#eb8157"
+        android:textColor="#ffffff"
+        android:layout_alignEnd="@+id/origin_shipper_cert"
+        android:padding="5dp" />
+
+    <EditText
+        android:id="@+id/harvest_location"
+        android:layout_marginTop="10dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/harvestLocation"
+        android:textColorHint="@color/thermalTagWhite"
+        android:layout_below="@+id/harvest_date"
+        android:layout_alignParentStart="true"
+        android:background="#eb8157"
+        android:textColor="#ffffff"
+        android:padding="5dp" />
+
+    <EditText
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/type_of_shellfish"
+        android:hint="@string/shellfishType"
+        android:textColorHint="@color/thermalTagWhite"
+        android:layout_below="@+id/harvest_location"
+        android:layout_alignParentStart="true"
+        android:background="#eb8157"
+        android:textColor="#ffffff"
+        android:layout_alignEnd="@+id/harvest_location"
+        android:padding="5dp" />
+
+    <EditText
+        android:id="@+id/quantity"
+        android:layout_marginTop="10dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/type_of_shellfish"
+        android:layout_alignStart="@+id/type_of_shellfish"
+        android:hint="@string/quantity"
+        android:textColorHint="@color/thermalTagWhite"
+        android:background="#eb8157"
+        android:textColor="#ffffff"
+        android:layout_toStartOf="@+id/button_camera"
+        android:layout_alignEnd="@+id/type_of_shellfish"
+        android:padding="5dp" />
+
+    <!-- MOBILE SENSOR FIELDS -->
+    <EditText
+        android:id="@+id/temperature"
+        android:hint="@string/temp"
+        android:textColorHint="#1c1a1a"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:background="#10cfbd"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/geo_location"
+        android:layout_alignTop="@+id/origin_shipper_cert"
+        android:padding="5dp" />
+
+    <EditText
+        android:id="@+id/geo_location"
+        android:hint="@string/geoLocation"
+        android:textColorHint="#1c1a1a"
+        android:layout_marginTop="10dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:text="GEO Location"
+        android:background="#10cfbd"
+        android:layout_above="@+id/harvest_location"
+        android:padding="5dp" />
+
+    <EditText
+        android:id="@+id/time_of_scan"
+        android:hint="@string/timeScan"
+        android:textColorHint="#1c1a1a"
+        android:layout_marginTop="10dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/geo_location"
+        android:layout_alignParentEnd="true"
+        android:background="#10cfbd"
+        android:layout_alignBottom="@+id/harvest_location"
+        android:padding="5dp" />
+
+    <EditText
+        android:id="@+id/date_of_scan"
+        android:hint="@string/dateScan"
+        android:textColorHint="#1c1a1a"
+        android:layout_marginTop="10dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:background="#10cfbd"
+        android:layout_above="@+id/quantity"
+        android:padding="5dp" />
+
+    <EditText
+        android:id="@+id/scan_id"
+        android:hint="@string/scanId"
+        android:textColorHint="#1c1a1a"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:background="#10cfbd"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/quantity"
+        android:layout_alignTop="@+id/quantity"
+        android:padding="5dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tag"
+        android:id="@+id/button4"
+        android:background="#eb8157"
+        android:textColor="#ffffff"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp"
+        android:id="@+id/button5"
+        android:layout_above="@+id/imageView"
+        android:layout_toEndOf="@+id/button4"
+        android:background="#10cfbd"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton"
+        android:src="@drawable/thermaltag_main_button"
+        android:background="#01ffffff"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton2"
+        android:src="@drawable/thermaltag_main_button"
+        android:background="#01ffffff"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/scan_id" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Previous Scan"
+        android:id="@+id/textView3"
+        android:layout_alignBottom="@+id/imageButton"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/quantity"
+        android:layout_alignTop="@+id/imageButton"
+        android:textColor="@color/thermalTagWhite"
+        android:textSize="15dp"
+        android:textAlignment="center"
+        android:paddingTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Save/Upload"
+        android:id="@+id/textView4"
+        android:textColor="@color/thermalTagWhite"
+        android:textSize="15dp"
+        android:textAlignment="center"
+        android:paddingTop="5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignTop="@+id/imageButton2"
+        android:layout_alignStart="@+id/scan_id"
+        android:layout_alignEnd="@+id/imageButton2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Take Photo"
+        android:id="@+id/textView5"
+        android:textColor="@color/thermalTagWhite"
+        android:textSize="15dp"
+        android:textAlignment="center"
+        android:paddingTop="15dp"
+        android:layout_alignEnd="@+id/button_camera"
+        android:layout_alignStart="@+id/button_camera"
+        android:layout_alignBottom="@+id/button_camera"
+        android:layout_alignTop="@+id/button_camera" />
+
+</RelativeLayout>

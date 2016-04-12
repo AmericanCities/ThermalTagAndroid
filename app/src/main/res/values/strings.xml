@@ -15,4 +15,5 @@
     <string name="timeScan">Time of Scan</string>
     <string name="dateScan">Date of Scan</string>
     <string name="scanId">Unique Scan ID</string>
+    <string name="action_settings">Scan Log</string>
 </resources>

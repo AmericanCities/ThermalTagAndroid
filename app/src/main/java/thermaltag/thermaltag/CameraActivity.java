@@ -2,16 +2,17 @@ package thermaltag.thermaltag;
 
 import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -22,19 +23,45 @@ import java.io.File;
 
 public class CameraActivity extends AppCompatActivity {
 
-
     private static String logtag="ThermalTag";
     private static int TAKE_PICTURE=1;
     private Uri imageUri;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.camera_main);
+        setContentView(R.layout.activity_camera);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         ImageButton cameraButton =(ImageButton)findViewById(R.id.button_camera);
         cameraButton.setOnClickListener(cameraListener);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     private View.OnClickListener cameraListener = new View.OnClickListener() {
         public void onClick(View v) {
@@ -66,7 +93,7 @@ public class CameraActivity extends AppCompatActivity {
             try{
                 bitmap = MediaStore.Images.Media.getBitmap(cr,selectedImage);
                 imageView.setImageBitmap(bitmap);
-                Toast.makeText(CameraActivity.this,selectedImage.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(CameraActivity.this, selectedImage.toString(), Toast.LENGTH_LONG).show();
             }catch (Exception e){
                 Log.e(logtag, e.toString());
             }
