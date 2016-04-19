@@ -30,6 +30,13 @@
             android:theme="@style/AppTheme"
             android:parentActivityName=".LoginActivity">
         </activity>
+        <activity
+            android:name=".ScanLogActivity"
+            android:label="ScanLogs"
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".CameraActivity">
+        </activity>
+
     </application>
 
 </manifest>

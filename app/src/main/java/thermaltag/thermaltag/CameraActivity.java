@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -26,7 +25,7 @@ public class CameraActivity extends AppCompatActivity {
     private static String logtag="ThermalTag";
     private static int TAKE_PICTURE=1;
     private Uri imageUri;
-
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +33,10 @@ public class CameraActivity extends AppCompatActivity {
         setContentView(R.layout.activity_camera);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         ImageButton cameraButton =(ImageButton)findViewById(R.id.button_camera);
         cameraButton.setOnClickListener(cameraListener);
+        username = getIntent().getExtras().getString("username");
+
     }
 
     @Override
@@ -55,6 +55,11 @@ public class CameraActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent i = new Intent(CameraActivity.this, ScanLogActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("username", username);
+            i.putExtras(bundle);
+            startActivity(i);
             return true;
         }
 
