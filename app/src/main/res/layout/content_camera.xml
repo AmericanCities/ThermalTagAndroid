@@ -75,10 +75,10 @@
         android:padding="5dp" />
 
     <EditText
+        android:id="@+id/type_of_shellfish"
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/type_of_shellfish"
         android:hint="@string/shellfishType"
         android:textColorHint="@color/thermalTagWhite"
         android:layout_below="@+id/harvest_location"
@@ -115,7 +115,6 @@
         android:layout_above="@+id/geo_location"
         android:layout_alignTop="@+id/origin_shipper_cert"
         android:padding="5dp" />
-
     <EditText
         android:id="@+id/geo_location"
         android:hint="@string/geoLocation"
@@ -197,11 +196,12 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton2"
+        android:id="@+id/button_submit"
         android:src="@drawable/thermaltag_main_button"
         android:background="#01ffffff"
         android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/scan_id" />
+        android:layout_alignEnd="@+id/scan_id"
+        android:longClickable="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -229,9 +229,9 @@
         android:textAlignment="center"
         android:paddingTop="5dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignTop="@+id/imageButton2"
+        android:layout_alignTop="@id/button_submit"
         android:layout_alignStart="@+id/scan_id"
-        android:layout_alignEnd="@+id/imageButton2" />
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
