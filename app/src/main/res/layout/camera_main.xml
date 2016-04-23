@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.keleon.myapplication.MainActivity">
+    >
 
     <ImageView
         android:layout_width="200dp"
@@ -33,6 +33,8 @@
     <!-- OCR FIELDS -->
     <EditText
         android:id="@+id/origin_shipper_cert"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:layout_marginTop="10dp"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
@@ -49,6 +51,8 @@
 
     <EditText
         android:id="@+id/harvest_date"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:layout_marginTop="10dp"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
@@ -75,10 +79,12 @@
         android:padding="5dp" />
 
     <EditText
+        android:id="@+id/type_of_shellfish"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/type_of_shellfish"
         android:hint="@string/shellfishType"
         android:textColorHint="@color/thermalTagWhite"
         android:layout_below="@+id/harvest_location"
@@ -90,6 +96,8 @@
 
     <EditText
         android:id="@+id/quantity"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:layout_marginTop="10dp"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
@@ -106,6 +114,8 @@
     <!-- MOBILE SENSOR FIELDS -->
     <EditText
         android:id="@+id/temperature"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:hint="@string/temp"
         android:textColorHint="#1c1a1a"
         android:layout_width="150dp"
@@ -118,6 +128,8 @@
 
     <EditText
         android:id="@+id/geo_location"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:hint="@string/geoLocation"
         android:textColorHint="#1c1a1a"
         android:layout_marginTop="10dp"
@@ -131,6 +143,8 @@
 
     <EditText
         android:id="@+id/time_of_scan"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:hint="@string/timeScan"
         android:textColorHint="#1c1a1a"
         android:layout_marginTop="10dp"
@@ -144,6 +158,8 @@
 
     <EditText
         android:id="@+id/date_of_scan"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:hint="@string/dateScan"
         android:textColorHint="#1c1a1a"
         android:layout_marginTop="10dp"
@@ -156,6 +172,8 @@
 
     <EditText
         android:id="@+id/scan_id"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:hint="@string/scanId"
         android:textColorHint="#1c1a1a"
         android:layout_width="150dp"
@@ -229,9 +247,9 @@
         android:textAlignment="center"
         android:paddingTop="5dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignTop="@+id/imageButton2"
+        android:layout_alignTop="@+id/button_submit"
         android:layout_alignStart="@+id/scan_id"
-        android:layout_alignEnd="@+id/imageButton2" />
+        android:layout_alignEnd="@+id/button_submit" />
 
     <TextView
         android:layout_width="wrap_content"

@@ -6,8 +6,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.keleon.myapplication.MainActivity">
+    android:paddingTop="@dimen/activity_vertical_margin">
 
     <ImageView
         android:layout_width="200dp"
@@ -51,6 +50,7 @@
         android:id="@+id/harvest_date"
         android:layout_marginTop="10dp"
         android:layout_width="150dp"
+        android:focusableInTouchMode="false"
         android:layout_height="wrap_content"
         android:hint="@string/harvestDate"
         android:textColorHint="@color/thermalTagWhite"
@@ -166,6 +166,7 @@
         android:padding="5dp" />
 
     <Button
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tag"
@@ -173,7 +174,8 @@
         android:background="#eb8157"
         android:textColor="#ffffff"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="40dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -182,7 +184,8 @@
         android:id="@+id/button5"
         android:layout_above="@+id/imageView"
         android:layout_toEndOf="@+id/button4"
-        android:background="#10cfbd"/>
+        android:background="#10cfbd"
+        android:layout_marginTop="40dp" />
 
     <ImageButton
         android:layout_width="wrap_content"
