@@ -67,6 +67,8 @@
 
     <EditText
         android:id="@+id/harvest_location"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:layout_marginTop="10dp"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
@@ -96,6 +98,7 @@
 
     <EditText
         android:id="@+id/quantity"
+        android:inputType="number|phone"
         android:ellipsize="end"
         android:singleLine="true"
         android:layout_marginTop="10dp"
@@ -126,7 +129,7 @@
         android:layout_alignTop="@+id/origin_shipper_cert"
         android:padding="5dp" />
 
-    <EditText
+    <TextView
         android:id="@+id/geo_location"
         android:ellipsize="end"
         android:singleLine="true"
@@ -141,11 +144,11 @@
         android:layout_above="@+id/harvest_location"
         android:padding="5dp" />
 
-    <EditText
+    <TextView
         android:id="@+id/time_of_scan"
         android:ellipsize="end"
         android:singleLine="true"
-        android:hint="@string/timeScan"
+        android:text="string/timeScan"
         android:textColorHint="#1c1a1a"
         android:layout_marginTop="10dp"
         android:layout_width="150dp"
@@ -154,13 +157,14 @@
         android:layout_alignParentEnd="true"
         android:background="#10cfbd"
         android:layout_alignBottom="@+id/harvest_location"
-        android:padding="5dp" />
+        android:padding="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-    <EditText
+    <TextView
         android:id="@+id/date_of_scan"
+        android:text="Date of Scan"
         android:ellipsize="end"
         android:singleLine="true"
-        android:hint="@string/dateScan"
         android:textColorHint="#1c1a1a"
         android:layout_marginTop="10dp"
         android:layout_width="150dp"

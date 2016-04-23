@@ -28,5 +28,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:design:22.2.1'
     compile project(path: ':volley')
+    //Adding google play API for GEO location services
+    compile 'com.google.android.gms:play-services-maps:8.4.0'
 //    compile project(':flironesdk')
 }
