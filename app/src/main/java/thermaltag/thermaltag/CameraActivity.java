@@ -1,6 +1,5 @@
 package thermaltag.thermaltag;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -18,6 +17,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.annotation.BoolRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -35,13 +36,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flir.flironesdk.Device;
+import com.flir.flironesdk.Frame;
+import com.flir.flironesdk.FrameProcessor;
+import com.flir.flironesdk.RenderedImage;
+
 import java.io.File;
-import java.text.SimpleDateFormat;
+import java.nio.ByteBuffer;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.EnumSet;
 import java.util.Locale;
 
-public class CameraActivity extends AppCompatActivity implements LocationListener {
+public class CameraActivity extends AppCompatActivity implements LocationListener , Device.Delegate, FrameProcessor.Delegate{
 
     // Declarations
     public static final String LOGTAG = "ThermalTag";
@@ -49,6 +55,7 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
     private Uri imageUri;
     private String username;
     private ImageButton cameraButton, submitButton;
+    private Button tempButton;
     private EditText shipper_cert, harvest_date, harvest_location, type_of_shellfish, quantity,
             temperature, scan_id;
     private TextView date_of_scan, time_of_scan, geo_location;
@@ -56,15 +63,25 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
                                             "Oct", "Nov", "Dec"};
     private LocationManager locationManager;
     private String provider;
+    private Boolean tempTaken = false;
+    private Boolean flirConnected = false;
+
+    // Thermal Tag variables
+    private volatile Device flirOneDevice;
+    private FrameProcessor frameProcessor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //initialize frameProcessor for FlirOne
+//        frameProcessor = new FrameProcessor(this, this, EnumSet.of(RenderedImage.ImageType.ThermalRadiometricKelvinImage));
+        frameProcessor = new FrameProcessor(this, this, EnumSet.of(RenderedImage.ImageType.BlendedMSXRGBA8888Image));
         setContentView(R.layout.activity_camera);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         //Could be another way to do this...
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
         // Get "extra" username passed from Login Activity
         username = getIntent().getExtras().getString("username");
@@ -82,6 +99,19 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
         // set geo location
         getGeoLocation();
     }
+
+    /* Request updates at startup */
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //START Google API GPS location
+        locationManager.requestLocationUpdates(provider, 400, 1, this);
+
+        //START FlirOne device discovery
+        Device.startDiscovery(this,this);
+    }
+
 
     // remember to prompt this if GPS value is empty
     private void checkGpsOn() {
@@ -168,6 +198,7 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
         //buttons
         cameraButton = (ImageButton) findViewById(R.id.button_camera);
         submitButton = (ImageButton) findViewById(R.id.button_submit);
+        tempButton = (Button) findViewById(R.id.button_temp);
 
         //editText fields
         shipper_cert = (EditText) findViewById(R.id.origin_shipper_cert);
@@ -187,6 +218,7 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
     private void setClickListners(){
         cameraButton.setOnClickListener(cameraListener);
         submitButton.setOnClickListener(submitListner);
+        tempButton.setOnClickListener(tempListner);
 
         //Date Picker button listener
         TextView datePickerBtn = (TextView)findViewById(R.id.harvest_date);
@@ -256,6 +288,23 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
         }
     };
 
+    private View.OnClickListener tempListner = new View.OnClickListener(){
+        public void onClick(View v){
+            if (flirConnected) {
+                takeTemp();
+            }
+        }
+    };
+
+    private void takeTemp() {
+        flirOneDevice.startFrameStream(new Device.StreamDelegate() {
+            @Override
+            public void onFrameReceived(Frame frame) {
+                frameProcessor.processFrame(frame);
+            }
+        });
+    }
+
     private void takePhoto(View v) {
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         File photo = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "picture.jpg");
@@ -287,56 +336,11 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
     }
 
 
-    // location Listener Interface (Required)
-
-    /* Request updates at startup */
-    @Override
-    protected void onResume() {
-        super.onResume();
-        locationManager.requestLocationUpdates(provider, 400, 1, this);
-    }
-
-    /* Remove the locationlistener updates when Activity is paused */
-    @Override
-    protected void onPause() {
-        super.onPause();
-        locationManager.removeUpdates(this);
-    }
-
-
-    @Override
-    public void onLocationChanged(Location location) {
-        String lat = location.convert(location.getLongitude(), location.FORMAT_DEGREES);
-        String lng= location.convert(location.getLatitude(), location.FORMAT_DEGREES);
-
-        Log.i(LOGTAG,"The location is: " + lng + ", " + lat);
-        String locationString = "LNG: " + lng + " LAT: " + lat;
-        geo_location.setText(String.valueOf(locationString));
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        Toast.makeText(this, "Enabled new provider " + provider,
-                Toast.LENGTH_SHORT).show();
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        Toast.makeText(this, "Disabled provider " + provider,
-                Toast.LENGTH_SHORT).show();
-    }
-
-
     /*
-     DATE PICKER FRAGMENT
-     ---------------------------------------------------------------
-    */
+        ------------------------------------------------------------
+         DATE PICKER FRAGMENT
+         -----------------------------------------------------------
+     */
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
@@ -366,5 +370,112 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
 //            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 //            sqlFormattedDate = sdf.format(c.getTime());
         }
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Methods to stop battery drain
+
+        // STOP GOOGLE API GPS updates when Activity is paused
+        locationManager.removeUpdates(this);
+
+        // STOP FLIR Device updates when Activity is paused
+        Device.stopDiscovery();
+        flirConnected =false;
+        Toast.makeText(CameraActivity.this,"Flir is acting up :(", Toast.LENGTH_LONG).show();
+    }
+
+
+
+
+
+    /*
+       ------------------------------------------------------------
+       INTERFACE IMPLANTATION
+       ------------------------------------------------------------
+    */
+
+
+    /* -----------------------------
+       Google API for Location
+      -----------------------------
+    */
+    @Override
+    public void onLocationChanged(Location location) {
+        String lat = location.convert(location.getLongitude(), location.FORMAT_DEGREES);
+        String lng= location.convert(location.getLatitude(), location.FORMAT_DEGREES);
+
+        Log.i(LOGTAG,"The location is: " + lng + ", " + lat);
+        String locationString = "LNG: " + lng + " LAT: " + lat;
+        geo_location.setText(String.valueOf(locationString));
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        Toast.makeText(this, "Enabled new provider " + provider,
+                Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Toast.makeText(this, "Disabled provider " + provider,
+                Toast.LENGTH_SHORT).show();
+    }
+
+    /* -----------------------------
+       FLIR  INTERFACE METHODS
+      -----------------------------
+    */
+
+    // We don't need this
+    @Override
+    public void onTuningStateChanged(Device.TuningState tuningState) {
+
+    }
+
+    // We don't need this
+    @Override
+    public void onAutomaticTuningChanged(boolean b) {
+
+    }
+
+    @Override
+    public void onDeviceConnected(Device device) {
+    /*
+        From Flir Docs: device - The object representing the connected device. You should
+        use this object to perform device operations such as starting frame streaming and
+        controlling tuning.
+     */
+        flirOneDevice = device;
+        flirConnected = true;
+        Log.i(LOGTAG, "FLIR Device connected!  Boom");
+    }
+
+    @Override
+    public void onFrameProcessed(RenderedImage renderedImage) {
+        final Bitmap imageBitmap = Bitmap.createBitmap(renderedImage.width(), renderedImage.height(),Bitmap.Config.ARGB_8888);
+        imageBitmap.copyPixelsFromBuffer(ByteBuffer.wrap(renderedImage.pixelData()));
+        final ImageView imageView = (ImageView) findViewById(R.id.image_camera);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                imageView.setImageBitmap(imageBitmap);
+            }
+        });
+    }
+
+    @Override
+    public void onDeviceDisconnected(Device device) {
+    // Called when the device has disconnected for any reason
+
     }
 }

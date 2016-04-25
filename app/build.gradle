@@ -30,5 +30,5 @@ dependencies {
     compile project(path: ':volley')
     //Adding google play API for GEO location services
     compile 'com.google.android.gms:play-services-maps:8.4.0'
-//    compile project(':flironesdk')
+    compile project(':flironesdk')
 }
