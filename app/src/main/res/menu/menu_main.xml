@@ -4,7 +4,10 @@
     tools:context="com.example.keleon.myapplication.MainActivity">
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
         android:title="@string/action_settings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/ocr_settings"
+        android:title="@string/ocr_settings"
         app:showAsAction="never" />
 </menu>

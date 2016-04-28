@@ -81,7 +81,7 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         //Could be another way to do this...
-        //setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
 
         // Get "extra" username passed from Login Activity
         username = getIntent().getExtras().getString("username");
@@ -250,6 +250,14 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent i = new Intent(CameraActivity.this, ScanLogActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("username", username);
+            i.putExtras(bundle);
+            startActivity(i);
+            return true;
+        }
+        else if (id == R.id.ocr_settings) {
+            Intent i = new Intent(CameraActivity.this, OCRActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString("username", username);
             i.putExtras(bundle);
