@@ -15,7 +15,7 @@
         android:background="@drawable/imageview"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/button4" />
+        android:layout_below="@+id/button_tag" />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -189,7 +189,7 @@
         android:padding="5dp" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/button_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tag"
@@ -201,7 +201,7 @@
 
     <Button
         android:id="@+id/button_temp"
-        android:layout_toEndOf="@+id/button4"
+        android:layout_toEndOf="@+id/button_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Temp"
@@ -272,5 +272,17 @@
         android:layout_alignStart="@+id/button_camera"
         android:layout_alignBottom="@+id/button_camera"
         android:layout_alignTop="@+id/button_camera" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Mode: Tag"
+        android:background="#07000000"
+        android:id="@+id/textView7"
+        android:layout_alignTop="@+id/button_temp"
+        android:layout_above="@+id/image_camera"
+        android:layout_alignEnd="@+id/temperature"
+        android:layout_toEndOf="@+id/button_temp" />
 
 </RelativeLayout>

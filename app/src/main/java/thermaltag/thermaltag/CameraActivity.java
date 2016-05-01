@@ -55,7 +55,7 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
     private Uri imageUri;
     private String username;
     private ImageButton cameraButton, submitButton;
-    private Button tempButton;
+    private Button tempButton, tagButton;
     private EditText shipper_cert, harvest_date, harvest_location, type_of_shellfish, quantity,
             temperature, scan_id;
     private TextView date_of_scan, time_of_scan, geo_location;
@@ -70,13 +70,15 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
     private volatile Device flirOneDevice;
     private FrameProcessor frameProcessor;
 
+    private int cameraMode =1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //initialize frameProcessor for FlirOne
 //        frameProcessor = new FrameProcessor(this, this, EnumSet.of(RenderedImage.ImageType.ThermalRadiometricKelvinImage));
-        frameProcessor = new FrameProcessor(this, this, EnumSet.of(RenderedImage.ImageType.BlendedMSXRGBA8888Image));
+  //      frameProcessor = new FrameProcessor(this, this, EnumSet.of(RenderedImage.ImageType.BlendedMSXRGBA8888Image));
         setContentView(R.layout.activity_camera);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -109,7 +111,7 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
         locationManager.requestLocationUpdates(provider, 400, 1, this);
 
         //START FlirOne device discovery
-        Device.startDiscovery(this,this);
+       // Device.startDiscovery(this,this);
     }
 
 
@@ -199,6 +201,7 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
         cameraButton = (ImageButton) findViewById(R.id.button_camera);
         submitButton = (ImageButton) findViewById(R.id.button_submit);
         tempButton = (Button) findViewById(R.id.button_temp);
+        tagButton = (Button) findViewById(R.id.button_tag);
 
         //editText fields
         shipper_cert = (EditText) findViewById(R.id.origin_shipper_cert);
@@ -219,6 +222,7 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
         cameraButton.setOnClickListener(cameraListener);
         submitButton.setOnClickListener(submitListner);
         tempButton.setOnClickListener(tempListner);
+        tagButton.setOnClickListener(tagListener);
 
         //Date Picker button listener
         TextView datePickerBtn = (TextView)findViewById(R.id.harvest_date);
@@ -292,15 +296,34 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
 
     private View.OnClickListener cameraListener = new View.OnClickListener() {
         public void onClick(View v) {
+            if(cameraMode==1)
             takePhoto(v);
+            else
+            {
+                if(flirConnected)
+                    takeTemp();
+                else
+                    Toast.makeText(CameraActivity.this,"Flir is not connected", Toast.LENGTH_LONG).show();
+            }
+        }
+    };
+
+    private View.OnClickListener tagListener = new View.OnClickListener(){
+        public void onClick(View v){
+            TextView mode =(TextView)findViewById(R.id.textView7);
+            mode.setText("Mode: Tag");
+            cameraMode = 1;
         }
     };
 
     private View.OnClickListener tempListner = new View.OnClickListener(){
         public void onClick(View v){
-            if (flirConnected) {
+            TextView mode =(TextView)findViewById(R.id.textView7);
+            mode.setText("Mode: Temp");
+            cameraMode = 2;
+          /*  if (flirConnected) {
                 takeTemp();
-            }
+            }*/
         }
     };
 
@@ -391,9 +414,9 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
         locationManager.removeUpdates(this);
 
         // STOP FLIR Device updates when Activity is paused
-        Device.stopDiscovery();
+        /*Device.stopDiscovery();
         flirConnected =false;
-        Toast.makeText(CameraActivity.this,"Flir is acting up :(", Toast.LENGTH_LONG).show();
+        Toast.makeText(CameraActivity.this,"Flir is acting up :(", Toast.LENGTH_LONG).show();*/
     }
 
 
