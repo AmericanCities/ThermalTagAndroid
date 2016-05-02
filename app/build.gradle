@@ -31,4 +31,6 @@ dependencies {
     //Adding google play API for GEO location services
     compile 'com.google.android.gms:play-services-maps:8.4.0'
     compile project(':flironesdk')
+//    include ':libraries:tess-two'
+    compile project(path: ':libraries:tess-two')
 }

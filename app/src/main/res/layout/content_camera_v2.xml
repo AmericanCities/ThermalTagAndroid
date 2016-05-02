@@ -10,25 +10,25 @@
     >
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="150dp"
         android:id="@+id/image_camera"
+        android:layout_width="100dp"
+        android:layout_height="175dp"
         android:background="@drawable/imageview"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/button4" />
+        android:layout_below="@+id/button_tag"
+        android:layout_alignEnd="@+id/imageButton" />
 
     <ImageButton
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:text="Take Picture"
-        android:id="@+id/button_camera"
-        android:layout_below="@+id/image_camera"
-        android:layout_centerHorizontal="true"
+        android:layout_height="54dp"
+        android:id="@+id/button_ocr"
         android:background="#005a6c7f"
         android:textColor="#ffffff"
-        android:layout_marginTop="-25dp"
-        android:src="@drawable/thermaltag_main_button" />
+        android:src="@drawable/orange_camera_52_52"
+        android:layout_below="@+id/button_tag"
+        android:layout_alignEnd="@+id/origin_shipper_cert"
+        android:layout_marginEnd="44dp"
+        android:layout_marginTop="48dp" />
 
     <!-- OCR FIELDS -->
     <EditText
@@ -42,7 +42,7 @@
         android:textColorHint="@color/thermalTagWhite"
         android:inputType="text"
         android:autoText="false"
-        android:layout_below="@+id/button_camera"
+        android:layout_below="@+id/image_camera"
         android:layout_alignParentStart="false"
         android:background="#eb8157"
         android:textColor="#ffffff"
@@ -110,7 +110,7 @@
         android:textColorHint="@color/thermalTagWhite"
         android:background="#eb8157"
         android:textColor="#ffffff"
-        android:layout_toStartOf="@+id/button_camera"
+        android:layout_toStartOf="@+id/button_ocr"
         android:layout_alignEnd="@+id/type_of_shellfish"
         android:padding="5dp" />
 
@@ -192,20 +192,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tag"
-        android:id="@+id/button4"
+        android:id="@+id/button_tag"
         android:background="#eb8157"
         android:textColor="#ffffff"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/image_camera"
+        android:layout_marginTop="40dp" />
 
     <Button
+        android:id="@+id/button_temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Temp"
-        android:id="@+id/button5"
-        android:layout_above="@+id/imageView"
-        android:layout_toEndOf="@+id/button4"
-        android:background="#10cfbd" />
+        android:background="#10cfbd"
+        android:layout_above="@+id/image_camera"
+        android:layout_alignParentEnd="true"
+        android:layout_alignStart="@+id/thermalImage"
+        android:layout_marginTop="40dp" />
 
     <ImageButton
         android:id="@+id/imageButton"
@@ -255,19 +259,45 @@
         android:layout_alignStart="@+id/scan_id"
         android:layout_alignEnd="@+id/button_submit" />
 
-    <TextView
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:id="@+id/thermalImage"
+        android:background="@drawable/imageview"
+        android:layout_below="@+id/button_temp"
+        android:layout_toEndOf="@+id/origin_shipper_cert"
+        android:layout_alignStart="@+id/button_submit"
+        android:layout_alignBottom="@+id/image_camera" />
+
+    <ImageButton
+        android:id="@+id/tempButton"
+        android:layout_width="wrap_content"
+        android:layout_height="54dp"
+        android:background="#005a6c7f"
+        android:textColor="#ffffff"
+        android:src="@drawable/teal_camera_52_52"
+        android:layout_marginEnd="44dp"
+        android:layout_alignTop="@+id/button_ocr"
+        android:layout_alignEnd="@+id/thermalImage" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/tempImageView"
+        android:visibility="invisible"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:id="@+id/button_flir_takePicture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Take Photo"
-        android:id="@+id/textView5"
-        android:textColor="@color/thermalTagWhite"
-        android:textSize="15dp"
-        android:textAlignment="center"
-        android:paddingTop="15dp"
-        android:layout_alignEnd="@+id/button_camera"
-        android:layout_alignStart="@+id/button_camera"
-        android:layout_alignBottom="@+id/button_camera"
-        android:layout_alignTop="@+id/button_camera" />
+        android:layout_alignBottom="@+id/quantity"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/teal_camera_52_52"
+        android:background="#00ffffff"
+        android:visibility="invisible" />
 
 </RelativeLayout>

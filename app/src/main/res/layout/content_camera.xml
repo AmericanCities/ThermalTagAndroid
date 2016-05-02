@@ -8,6 +8,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
+
     <ImageView
         android:id="@+id/image_camera"
         android:layout_width="200dp"
@@ -21,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:text="Take Picture"
-        android:id="@+id/button_camera"
+        android:id="@+id/button_ocr"
         android:layout_below="@+id/image_camera"
         android:layout_centerHorizontal="true"
         android:background="#005a6c7f"
@@ -40,7 +41,7 @@
         android:hint="@string/shipperCert"
         android:textColorHint="@color/thermalTagWhite"
         android:inputType="text"
-        android:layout_below="@+id/button_camera"
+        android:layout_below="@+id/button_ocr"
         android:layout_alignParentStart="false"
         android:background="#eb8157"
         android:textColor="#ffffff"
@@ -109,11 +110,12 @@
         android:textColorHint="@color/thermalTagWhite"
         android:background="#eb8157"
         android:textColor="#ffffff"
-        android:layout_toStartOf="@+id/button_camera"
+        android:layout_toStartOf="@+id/button_ocr"
         android:layout_alignEnd="@+id/type_of_shellfish"
         android:padding="5dp" />
 
     <!-- MOBILE SENSOR FIELDS -->
+
     <EditText
         android:id="@+id/temperature"
         android:ellipsize="end"
@@ -268,10 +270,10 @@
         android:textSize="15dp"
         android:textAlignment="center"
         android:paddingTop="15dp"
-        android:layout_alignEnd="@+id/button_camera"
-        android:layout_alignStart="@+id/button_camera"
-        android:layout_alignBottom="@+id/button_camera"
-        android:layout_alignTop="@+id/button_camera" />
+        android:layout_alignEnd="@+id/button_ocr"
+        android:layout_alignStart="@+id/button_ocr"
+        android:layout_alignBottom="@+id/button_ocr"
+        android:layout_alignTop="@+id/button_ocr" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -284,5 +286,26 @@
         android:layout_above="@+id/image_camera"
         android:layout_alignEnd="@+id/temperature"
         android:layout_toEndOf="@+id/button_temp" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/tempImageView"
+        android:visibility="invisible"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:id="@+id/button_flir_takePicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/quantity"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/teal_camera_52_52"
+        android:background="#00ffffff"
+        android:visibility="invisible" />
+
 
 </RelativeLayout>

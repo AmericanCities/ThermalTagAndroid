@@ -27,6 +27,7 @@ import android.widget.EditText;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 
+
 public class OCRActivity extends AppCompatActivity {
     public static final String PACKAGE_NAME = "thermaltag.thermaltag";
     public static final String DATA_PATH = Environment

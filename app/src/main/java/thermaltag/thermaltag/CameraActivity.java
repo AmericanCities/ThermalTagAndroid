@@ -1,9 +1,7 @@
 package thermaltag.thermaltag;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,15 +14,14 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.ExifInterface;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.support.annotation.BoolRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -52,7 +49,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.Locale;
 
@@ -63,8 +62,9 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
     private static int TAKE_PICTURE = 1;
     private Uri imageUri;
     private String username;
-    private ImageButton cameraButton, submitButton;
+    private ImageButton cameraButton, submitButton, flirCameraButton, camTempButton, camOCRButton;
     private Button tempButton, tagButton;
+    private ImageView imageView, tempImageView, thermalImage;
     private EditText shipper_cert, harvest_date, harvest_location, type_of_shellfish, quantity,
             temperature, scan_id;
     private TextView date_of_scan, time_of_scan, geo_location;
@@ -74,11 +74,12 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
     private String provider;
     private Boolean tempTaken = false;
     private Boolean flirConnected = false;
-
+    private Boolean flirImageRequested = false;
+    private String lastSavedPath;
     // Thermal Tag variables
     private volatile Device flirOneDevice;
     private FrameProcessor frameProcessor;
-
+    private String thermalImageFile;
     private int cameraMode =1;
 
     //OCR variables
@@ -152,8 +153,7 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
         _path = DATA_PATH + "/ocr.jpg";
 
         //initialize frameProcessor for FlirOne
-//        frameProcessor = new FrameProcessor(this, this, EnumSet.of(RenderedImage.ImageType.ThermalRadiometricKelvinImage));
-  //      frameProcessor = new FrameProcessor(this, this, EnumSet.of(RenderedImage.ImageType.BlendedMSXRGBA8888Image));
+        frameProcessor = new FrameProcessor(this, this, EnumSet.of(RenderedImage.ImageType.BlendedMSXRGBA8888Image));
         setContentView(R.layout.activity_camera);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -168,7 +168,6 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
 
         // set click listeners
         setClickListners();
-
 
         // check if Location services is turned on
         checkGpsOn();
@@ -186,7 +185,7 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
         locationManager.requestLocationUpdates(provider, 400, 1, this);
 
         //START FlirOne device discovery
-       // Device.startDiscovery(this,this);
+        Device.startDiscovery(this,this);
     }
 
 
@@ -218,7 +217,6 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
             AlertDialog.Builder builder = new AlertDialog.Builder(CameraActivity.this);
             builder.setMessage("This App requires location Services.  Turn on?").setPositiveButton("Yes", dialogClickListener)
                     .setNegativeButton("No", dialogClickListener).show();
-
         }
     }
 
@@ -243,11 +241,6 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
         }
     }
 
-//    // change geo location to string
-//    public static String locationStringFromLocation(final Location location) {
-//        return Location.convert(location.getLatitude(), Location.FORMAT_DEGREES) + " " + Location.convert(location.getLongitude(), Location.FORMAT_DEGREES);
-//    }
-
     // set current date of scan
     //setDateAndTime();
     private void setDateAndTime() {
@@ -265,16 +258,21 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
             amPm="PM";
         }
 
-        date_of_scan.setText(MONTHS[month] + " " + day + " " + year);
-        time_of_scan.setText(hour + ":" + minute + ":" +second + " " + amPm);
+        String scanDate = MONTHS[month] + " " + day + " " + year;
+        String scanTime = hour + ":" + minute + ":" +second + " " + amPm;
+        date_of_scan.setText(scanDate);
+        time_of_scan.setText(scanTime);
     }
 
 
-    // This method sets all of our view variables
+    // This method creates all of our view variables
     private void createViewVariables() {
         //buttons
-        cameraButton = (ImageButton) findViewById(R.id.button_camera);
+        cameraButton = (ImageButton) findViewById(R.id.button_ocr);
         submitButton = (ImageButton) findViewById(R.id.button_submit);
+        camTempButton = (ImageButton)findViewById(R.id.tempButton);
+        camOCRButton = (ImageButton) findViewById(R.id.button_ocr);
+        flirCameraButton = (ImageButton) findViewById(R.id.button_flir_takePicture);
         tempButton = (Button) findViewById(R.id.button_temp);
         tagButton = (Button) findViewById(R.id.button_tag);
 
@@ -291,13 +289,21 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
         date_of_scan = (TextView) findViewById(R.id.date_of_scan);
         time_of_scan = (TextView) findViewById(R.id.time_of_scan);
         geo_location = (TextView) findViewById(R.id.geo_location);
+
+        //imageView Fields
+        thermalImage = (ImageView) findViewById(R.id.thermalImage);
+        tempImageView = (ImageView) findViewById(R.id.tempImageView);
+        imageView = (ImageView) findViewById(R.id.image_camera);
     }
 
     private void setClickListners(){
         cameraButton.setOnClickListener(cameraListener);
+        flirCameraButton.setOnClickListener(flirCameraListener);
         submitButton.setOnClickListener(submitListner);
         tempButton.setOnClickListener(tempListner);
+        camTempButton.setOnClickListener(tempListner);
         tagButton.setOnClickListener(tagListener);
+        camOCRButton.setOnClickListener(tagListener);
 
         //Date Picker button listener
         TextView datePickerBtn = (TextView)findViewById(R.id.harvest_date);
@@ -365,6 +371,23 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
                 Snackbar.make(v, "Shipper Certificate ID must be filled out", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             } // end if
+            if (entered_harvest_date.equals("")) {
+                Snackbar.make(v, "Harvest date must be set", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            } // end if
+            if (entered_harvest_location.equals("")) {
+                Snackbar.make(v, "Harvest location must be entered", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            } // end if
+            if (entered_type_of_shellfish.equals("")) {
+                Snackbar.make(v, "Harvest location must be entered", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            } // end if
+            if (entered_quantity.equals("")) {
+                Snackbar.make(v, "Quantity must be entered", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            } // end if
+
         }
     };
 
@@ -388,20 +411,33 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
 
     private View.OnClickListener tagListener = new View.OnClickListener(){
         public void onClick(View v){
-            TextView mode =(TextView)findViewById(R.id.textView7);
-            mode.setText("Mode: Tag");
+//            TextView mode =(TextView)findViewById(R.id.textView7);
+//            mode.setText("Mode: Tag");
             cameraMode = 1;
+        }
+    };
+
+
+
+
+    private View.OnClickListener flirCameraListener = new View.OnClickListener(){
+        public void onClick(View v){
+            flirImageRequested = true;
+            setDateAndTime();
+            setThermalTagImage();
         }
     };
 
     private View.OnClickListener tempListner = new View.OnClickListener(){
         public void onClick(View v){
-            TextView mode =(TextView)findViewById(R.id.textView7);
-            mode.setText("Mode: Temp");
+//            TextView mode =(TextView)findViewById(R.id.textView7);
+//            mode.setText("Mode: Temp");
+            tempImageView.setVisibility(View.VISIBLE);
+            flirCameraButton.setVisibility(View.VISIBLE);
             cameraMode = 2;
-          /*  if (flirConnected) {
+            if (flirConnected) {
                 takeTemp();
-            }*/
+            }
         }
     };
 
@@ -412,6 +448,18 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
                 frameProcessor.processFrame(frame);
             }
         });
+    }
+
+    private void setThermalTagImage(){
+        try {
+            Log.i(LOGTAG, "image view path is: " + thermalImageFile);
+            imageView.setImageURI(Uri.parse(thermalImageFile));
+        }catch (Exception e) {
+            Log.e(LOGTAG, e.toString());
+        }
+
+        tempImageView.setVisibility(View.INVISIBLE);
+        flirCameraButton.setVisibility(View.INVISIBLE);
     }
 
    /* private void takePhoto(View v) {
@@ -554,7 +602,7 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
             Uri selectedImage = imageUri;
             getContentResolver().notifyChange(selectedImage, null);
 
-            ImageView imageView = (ImageView) findViewById(R.id.image_camera);
+
             ContentResolver cr = getContentResolver();
             Bitmap bitmap;
 
@@ -567,6 +615,8 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
             }
         }
     }*/
+
+
 
 
     /*
@@ -595,7 +645,8 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
             EditText dateSelected = (EditText)getActivity().findViewById(R.id.harvest_date);
-            dateSelected.setText(MONTHS[month] + " " + day + " " + year);
+            String harvestDate = MONTHS[month] + " " + day + " " + year;
+            dateSelected.setText(harvestDate);
 
 //            In case we have time to implement local SQL-LITE
 //            Calendar c = Calendar.getInstance();
@@ -616,11 +667,10 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
         locationManager.removeUpdates(this);
 
         // STOP FLIR Device updates when Activity is paused
-        /*Device.stopDiscovery();
+        Device.stopDiscovery();
         flirConnected =false;
-        Toast.makeText(CameraActivity.this,"Flir is acting up :(", Toast.LENGTH_LONG).show();*/
+        Toast.makeText(CameraActivity.this,"Flir is acting up :(", Toast.LENGTH_LONG).show();
     }
-
 
 
 
@@ -694,16 +744,59 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
     }
 
     @Override
-    public void onFrameProcessed(RenderedImage renderedImage) {
+    public void onFrameProcessed(final RenderedImage renderedImage) {
         final Bitmap imageBitmap = Bitmap.createBitmap(renderedImage.width(), renderedImage.height(),Bitmap.Config.ARGB_8888);
         imageBitmap.copyPixelsFromBuffer(ByteBuffer.wrap(renderedImage.pixelData()));
-        final ImageView imageView = (ImageView) findViewById(R.id.image_camera);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                imageView.setImageBitmap(imageBitmap);
+                tempImageView.setImageBitmap(imageBitmap);
+                thermalImage.setImageBitmap(imageBitmap);
             }
         });
+
+        if (flirImageRequested) {
+            flirImageRequested = false;
+            final Context context = this;
+            new Thread(new Runnable() {
+                public void run() {
+                    String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ssZ", Locale.getDefault());
+                    String formatedDate = sdf.format(new Date());
+                    String fileName = "FLIROne-" + formatedDate + ".jpg";
+                    try {
+                        lastSavedPath = path + "/" + fileName;
+                        renderedImage.getFrame().save(new File(lastSavedPath), RenderedImage.Palette.Iron, RenderedImage.ImageType.BlendedMSXRGBA8888Image);
+                        thermalImageFile = lastSavedPath;
+                        MediaScannerConnection.scanFile(context,
+                                new String[]{path + "/" + fileName}, null,
+                                new MediaScannerConnection.OnScanCompletedListener() {
+                                    @Override
+                                    public void onScanCompleted(String path, Uri uri) {
+                                        Log.i(LOGTAG, "Scanned " + path + ":");
+                                        Log.i(LOGTAG, "-> uri=" + uri);
+                                    }
+
+                                });
+
+                        imageView.setImageURI(Uri.parse(thermalImageFile));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            tempImageView.animate().setDuration(50).scaleY(0).withEndAction((new Runnable() {
+                                public void run() {
+                                    tempImageView.animate().setDuration(50).scaleY(1);
+                                }
+                            }));
+                        }
+                    });
+                }
+            }).start();
+        } // end if flir image requested
     }
 
     @Override
