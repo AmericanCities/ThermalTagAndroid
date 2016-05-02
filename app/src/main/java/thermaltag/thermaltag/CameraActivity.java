@@ -585,7 +585,7 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
         Log.v(TAG, "OCRED TEXT: " + recognizedText);
 
         TextView origin_shipper_cert =(TextView)findViewById(R.id.origin_shipper_cert);
-        origin_shipper_cert.setText(originalShipperWhere+2);
+        origin_shipper_cert.setText(originalShipper[originalShipperWhere+2]);
 
        /* if (lang.equalsIgnoreCase("eng")) {
             recognizedText = recognizedText.replaceAll("[^a-zA-Z0-9]+", " ");
