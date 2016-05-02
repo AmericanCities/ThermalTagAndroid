@@ -54,6 +54,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.Locale;
+import java.util.Arrays;
 
 public class CameraActivity extends AppCompatActivity implements LocationListener , Device.Delegate, FrameProcessor.Delegate{
 
@@ -578,18 +579,24 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
         // We will display a stripped out trimmed alpha-numeric version of it (if lang is eng)
         // so that garbage doesn't make it to the display.
 
+        String originalShipper[]=recognizedText.split(" ");
+        int originalShipperWhere= Arrays.asList(originalShipper).indexOf("Original");
+
         Log.v(TAG, "OCRED TEXT: " + recognizedText);
 
-        if (lang.equalsIgnoreCase("eng")) {
+        TextView origin_shipper_cert =(TextView)findViewById(R.id.origin_shipper_cert);
+        origin_shipper_cert.setText(originalShipperWhere+2);
+
+       /* if (lang.equalsIgnoreCase("eng")) {
             recognizedText = recognizedText.replaceAll("[^a-zA-Z0-9]+", " ");
         }
 
         recognizedText = recognizedText.trim();
 
-       // if (recognizedText.length() != 0) {
-         //   _field.setText(_field.getText().toString().length() == 0 ? recognizedText : _field.getText() + " " + recognizedText);
-           // _field.setSelection(_field.getText().toString().length());
-        //}
+        if (recognizedText.length() != 0) {
+           _field.setText(_field.getText().toString().length() == 0 ? recognizedText : _field.getText() + " " + recognizedText);
+          _field.setSelection(_field.getText().toString().length());
+        } */
 
         // Cycle done.
     }
