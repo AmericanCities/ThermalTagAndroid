@@ -586,10 +586,10 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
 
         recognizedText = recognizedText.trim();
 
-        if (recognizedText.length() != 0) {
-            _field.setText(_field.getText().toString().length() == 0 ? recognizedText : _field.getText() + " " + recognizedText);
-            _field.setSelection(_field.getText().toString().length());
-        }
+       // if (recognizedText.length() != 0) {
+         //   _field.setText(_field.getText().toString().length() == 0 ? recognizedText : _field.getText() + " " + recognizedText);
+           // _field.setSelection(_field.getText().toString().length());
+        //}
 
         // Cycle done.
     }
