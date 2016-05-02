@@ -580,12 +580,29 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
         // so that garbage doesn't make it to the display.
 
         String originalShipper[]=recognizedText.split(" ");
-        int originalShipperWhere= Arrays.asList(originalShipper).indexOf("Original");
+        String type[]=recognizedText.split(" ");
+        String count[]=recognizedText.split(" ");
+        String harvestDate[]=recognizedText.split(" ");
+        String harvestLocation[]=recognizedText.split(" ");
+        int originalShipperWhere= Arrays.asList(originalShipper).indexOf("Shipper");
+        int typeWhere= Arrays.asList(type).indexOf("Shellfish");
+        int countWhere= Arrays.asList(count).indexOf("Unit");
+        int harvestDateWhere= Arrays.asList(harvestDate).indexOf("Date");
+        int harvestLocationWhere= Arrays.asList(harvestLocation).indexOf("Location");
 
         Log.v(TAG, "OCRED TEXT: " + recognizedText);
 
-        TextView origin_shipper_cert =(TextView)findViewById(R.id.origin_shipper_cert);
-        origin_shipper_cert.setText(originalShipper[originalShipperWhere+2]);
+        TextView shipper_cert =(TextView)findViewById(R.id.origin_shipper_cert);
+        shipper_cert.setText(originalShipper[originalShipperWhere+1]);
+
+        TextView harvest_date=(TextView)findViewById(R.id.harvest_date);
+        harvest_date.setText(harvestDate[harvestDateWhere+1]);
+        TextView harvest_location=(TextView)findViewById(R.id.harvest_location);
+        harvest_location.setText(harvestLocation[harvestLocationWhere+1]);
+        TextView type_of_shellfish=(TextView)findViewById(R.id.type_of_shellfish);
+        type_of_shellfish.setText(type[typeWhere+1]);
+        TextView quantity=(TextView)findViewById(R.id.quantity);
+        quantity.setText(count[countWhere+1]);
 
        /* if (lang.equalsIgnoreCase("eng")) {
             recognizedText = recognizedText.replaceAll("[^a-zA-Z0-9]+", " ");
