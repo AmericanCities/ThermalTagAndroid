@@ -271,7 +271,6 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
         cameraButton = (ImageButton) findViewById(R.id.button_ocr);
         submitButton = (ImageButton) findViewById(R.id.button_submit);
         camTempButton = (ImageButton)findViewById(R.id.tempButton);
-        camOCRButton = (ImageButton) findViewById(R.id.button_ocr);
         flirCameraButton = (ImageButton) findViewById(R.id.button_flir_takePicture);
         tempButton = (Button) findViewById(R.id.button_temp);
         tagButton = (Button) findViewById(R.id.button_tag);
@@ -302,8 +301,7 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
         submitButton.setOnClickListener(submitListner);
         tempButton.setOnClickListener(tempListner);
         camTempButton.setOnClickListener(tempListner);
-        tagButton.setOnClickListener(tagListener);
-        camOCRButton.setOnClickListener(tagListener);
+        tagButton.setOnClickListener(cameraListener);
 
         //Date Picker button listener
         TextView datePickerBtn = (TextView)findViewById(R.id.harvest_date);
@@ -394,18 +392,22 @@ public class CameraActivity extends AppCompatActivity implements LocationListene
 
     private View.OnClickListener cameraListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(cameraMode==1)
-            {
-                Log.v(TAG, "Starting Camera app");
-                startCameraActivity();
-            }
-            else
-            {
-                if(flirConnected)
-                    takeTemp();
-                else
-                    Toast.makeText(CameraActivity.this,"Flir is not connected", Toast.LENGTH_LONG).show();
-            }
+
+            Log.v(LOGTAG, "Starting Camera app");
+            startCameraActivity();
+
+//            if(cameraMode==1)
+//            {
+//                Log.v(TAG, "Starting Camera app");
+//                startCameraActivity();
+//            }
+//            else
+//            {
+//                if(flirConnected)
+//                    takeTemp();
+//                else
+//                    Toast.makeText(CameraActivity.this,"Flir is not connected", Toast.LENGTH_LONG).show();
+//            }
         }
     };
 
